@@ -37,9 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pinchart',
     'simple_history',
-    'core',
-    'parts',
 ]
 
 MIDDLEWARE = [
