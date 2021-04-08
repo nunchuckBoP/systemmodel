@@ -6,9 +6,12 @@ import numpy
 # Create your models here.
 
 class Pinchart(models.Model):
-    customer = models.IntegerField(default=1)
+    customer = models.IntegerField(default=0)
     name = models.CharField(max_length=256)
     description = models.CharField(max_length=1024, blank=True, null=True)
+    controller_ipaddress = models.GenericIPAddressField(verbose_name="Controller IP Address",
+                                                        protocol='IPv4')
+    controller_slot = models.IntegerField(verbose_name="Controller Slot #")
 
     def __str__(self):
         return self.name
@@ -25,10 +28,11 @@ class Word(models.Model):
         ('STRING', 'STRING'),
         ('INT', 'INT'),
         ('16-BIT', '16-BIT'),
+        ('STEP DESCRIPTION', 'STEP DESCRIPTION'),
     ]
     pinchart = models.ForeignKey(Pinchart, on_delete=models.CASCADE)
     name = models.CharField(max_length=82) # word or variable name
-    type = models.CharField(choices=TYPE_CHOICES, default='DINT', max_length=10)
+    type = models.CharField(choices=TYPE_CHOICES, default='DINT', max_length=30)
     address_template = models.CharField(verbose_name="Address Template", max_length=1024)
 
     def __str__(self):
@@ -86,8 +90,6 @@ class Step(models.Model):
             self.value_int = numpy.int16(value)
         elif _type == 'REAL':
             self.value_real = float(value)
-        elif _type == 'STRING':
-            self.value_string = value
         else:
             raise ValueError()
 
@@ -109,6 +111,8 @@ class Step(models.Model):
             return self.value_real
         elif _type == 'STRING':
             return self.value_string
+        elif _type == 'STEP DESCRIPTION':
+            return self.description
         else:
             raise ValueError()       
 
