@@ -59,14 +59,18 @@ class BitDescription(models.Model):
 class Sequence(models.Model):
     pinchart = models.ForeignKey(Pinchart, on_delete=models.CASCADE)
     name = models.CharField(max_length=82)
+    number = models.IntegerField()
+    address_template = models.CharField(max_length=1024, null=True, blank=True)
+    name_address_template = models.CharField(max_length=1024, null=True, blank=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        unique_together = ("pinchart", "name")
+        unique_together = ("pinchart", "number")
 
 class Step(models.Model):
+
     sequence = models.ForeignKey(Sequence, on_delete=models.CASCADE)
     word = models.ForeignKey(Word, on_delete=models.SET_NULL, null=True, blank=True)
     number = models.IntegerField(verbose_name="Step Number")
@@ -126,5 +130,12 @@ class Step(models.Model):
         elif _type == '16-BIT':
             return numpy.binary_repr(self.value, width=16)
 
+    @property
+    def full_address(self):
+        _a = self.sequence.address_template + self.word.address_template
+        _a = _a.replace(':sequence_number:', str(self.sequence.number))
+        _a = _a.replace(':step:', str(self.number))
+        return _a
+
     class Meta:
-        unique_together = ("sequence", "number")
+        unique_together = ("sequence", "number", "word")
