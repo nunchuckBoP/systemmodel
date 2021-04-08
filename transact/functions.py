@@ -7,6 +7,6 @@ def download(controller_ipaddress, controller_slot, data, user):
     t = Transaction(user)
 
 
-def upload(controller_ipaddress, controller_slot):
+def upload(controller_ipaddress, controller_slot, user):
     
     t = Transaction(user)
