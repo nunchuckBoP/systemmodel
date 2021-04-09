@@ -14,9 +14,19 @@ class Pinchart(models.Model):
     controller_ipaddress = models.GenericIPAddressField(verbose_name="Controller IP Address",
                                                         protocol='IPv4')
     controller_slot = models.IntegerField(verbose_name="Controller Slot #")
+    locked = models.BooleanField(verbose_name="Locked for Editing", default=False)
+    array_length = models.IntegerField(verbose_name="PLC Array Length")
 
     def __str__(self):
         return self.name
+
+    def lock(self):
+        self.locked = True
+        self.save()
+    
+    def unlock(self):
+        self.locked = False
+        self.save()
 
     class Meta:
         unique_together = ("customer", "name")
@@ -67,6 +77,23 @@ class Sequence(models.Model):
     number = models.IntegerField()
     address_template = models.CharField(max_length=1024, null=True, blank=True)
     name_address_template = models.CharField(max_length=1024, null=True, blank=True)
+    locked = models.BooleanField(verbose_name="Locked for Editing", default=False)
+    array_length = models.IntegerField(verbose_name="PLC Array Length")
+
+    @property
+    def is_locked(self):
+        if self.locked or self.pinchart.locked:
+            return True
+        else:
+            return False
+
+    def lock(self):
+        self.locked = True
+        self.save()
+
+    def unlock(self):
+        self.locked = False
+        self.save()
 
     def __str__(self):
         return self.name
@@ -77,9 +104,16 @@ class Sequence(models.Model):
 class Step(models.Model):
     objects = managers.StepManager()
     sequence = models.ForeignKey(Sequence, on_delete=models.CASCADE)
+    number = models.IntegerField()
+    description = models.CharField(max_length=82)
+
+    class Meta:
+        unique_together = ("sequence", "number")
+
+class StepData(models.Model):
+    objects = managers.StepDataManager()
+    step = models.ForeignKey(Step, on_delete=models.CASCADE)
     word = models.ForeignKey(Word, on_delete=models.SET_NULL, null=True, blank=True)
-    number = models.IntegerField(verbose_name="Step Number")
-    description = models.CharField(max_length=1024, default="**Spare Step**")
     value_bool = models.BooleanField(default=False)
     value_dint = models.IntegerField(default=0, blank=True, null=True)
     value_real = models.DecimalField(default=0.0, blank=True, null=True, decimal_places=3, max_digits=10)
@@ -104,7 +138,6 @@ class Step(models.Model):
 
     @property
     def value(self):
-
         # gets the type of the value
         _type = self.word.type
 
@@ -127,7 +160,7 @@ class Step(models.Model):
 
     @property
     def bin_value(self):
-        
+        # gets the type of the word
         _type = self.word.type
 
         if _type == '32-BIT':
@@ -139,8 +172,8 @@ class Step(models.Model):
     def full_address(self):
         _a = self.sequence.address_template + self.word.address_template
         _a = _a.replace(':sequence_number:', str(self.sequence.number))
-        _a = _a.replace(':step:', str(self.number))
+        _a = _a.replace(':step:', str(self.step.number))
         return _a
 
     class Meta:
-        unique_together = ("sequence", "number", "word")
+        unique_together = ("step", "word")

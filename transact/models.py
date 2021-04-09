@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import transact.managers as managers
+from datetime import datetime
 
 # Create your models here.
 
@@ -35,3 +36,11 @@ class Transaction(models.Model):
     has_errors = models.BooleanField(default=False, verbose_name="Has Errors")
     data_object = models.JSONField(null=True, blank=True)
     errors = models.JSONField(null=True, blank=True)
+
+    def completed(self):
+        """
+            This method marks the transaction completed
+            and saves
+        """
+        self.completed_on = datetime.now()
+        self.save()

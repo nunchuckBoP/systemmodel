@@ -84,3 +84,6 @@ class StepManager(models.Manager):
         for i in steps:
             i.number = i.number - 1
             i.save()
+
+class StepDataManager(models.Manager):
+    pass
