@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import transact.managers as managers
 
 # Create your models here.
 
@@ -17,8 +18,20 @@ class Transaction(models.Model):
         (0, 'DOWNLOAD'),
         (1, 'UPLOAD')
     ]
-    created_on = models.DateTimeField(verbose_name="created on", auto_now_add=True)
+
+    DATA_TYPE_CHOICES = [
+        (0, 'PINCHART'),
+        (1, 'PINCHART-SEQUENCE'),
+        (2, 'DATA BLOCK')
+    ]
+
+    objects = managers.TransactionManager()
+    created_on = models.DateTimeField(verbose_name="Created On", auto_now_add=True)
+    completed_on = models.DateTimeField(verbose_name="Completed On", null=True, blank=True)
     function = models.IntegerField(choices=FUNCTION_CHOICES)
+    data_type = models.IntegerField(choices=DATA_TYPE_CHOICES, default=0)
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    errors = models.JSONField()
+    has_errors = models.BooleanField(default=False, verbose_name="Has Errors")
+    data_object = models.JSONField(null=True, blank=True)
+    errors = models.JSONField(null=True, blank=True)

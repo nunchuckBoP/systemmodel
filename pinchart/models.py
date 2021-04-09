@@ -1,11 +1,13 @@
 from enum import unique
 from django.db import models
+from pinchart import managers
 from django.db.models.fields import NullBooleanField
 import numpy
 
 # Create your models here.
 
 class Pinchart(models.Model):
+    objects = managers.PinchartManager()
     customer = models.IntegerField(default=0)
     name = models.CharField(max_length=256)
     description = models.CharField(max_length=1024, blank=True, null=True)
@@ -30,6 +32,7 @@ class Word(models.Model):
         ('16-BIT', '16-BIT'),
         ('STEP DESCRIPTION', 'STEP DESCRIPTION'),
     ]
+    objects = managers.WordManager()
     pinchart = models.ForeignKey(Pinchart, on_delete=models.CASCADE)
     name = models.CharField(max_length=82) # word or variable name
     type = models.CharField(choices=TYPE_CHOICES, default='DINT', max_length=30)
@@ -42,6 +45,7 @@ class Word(models.Model):
         unique_together = ("pinchart", "name")
 
 class BitDescription(models.Model):
+    objects = managers.BitDescriptionManager()
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
     bit = models.IntegerField(verbose_name="Bit number 0-15, or 0-31")
     device = models.CharField(max_length=24, blank=True, null=True)
@@ -57,6 +61,7 @@ class BitDescription(models.Model):
         unique_together = ("word", "bit")
 
 class Sequence(models.Model):
+    objects = managers.SequenceManager()
     pinchart = models.ForeignKey(Pinchart, on_delete=models.CASCADE)
     name = models.CharField(max_length=82)
     number = models.IntegerField()
@@ -70,7 +75,7 @@ class Sequence(models.Model):
         unique_together = ("pinchart", "number")
 
 class Step(models.Model):
-
+    objects = managers.StepManager()
     sequence = models.ForeignKey(Sequence, on_delete=models.CASCADE)
     word = models.ForeignKey(Word, on_delete=models.SET_NULL, null=True, blank=True)
     number = models.IntegerField(verbose_name="Step Number")
