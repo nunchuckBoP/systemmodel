@@ -3,6 +3,7 @@ from django.db import models
 from pinchart import managers
 from django.db.models.fields import NullBooleanField
 import numpy
+import core.utils
 
 # Create your models here.
 
@@ -27,6 +28,11 @@ class Pinchart(models.Model):
     def unlock(self):
         self.locked = False
         self.save()
+
+    def __deep_copy__(self, new_name):
+        n = core.utils.derive(self)
+        n.name = new_name
+        n.save()
 
     class Meta:
         unique_together = ("customer", "name")
@@ -97,6 +103,11 @@ class Sequence(models.Model):
 
     def __str__(self):
         return self.name
+
+    def __deep_copy__(self, new_name):
+        n = core.utils.derive(self)
+        n.name = new_name
+        n.save()
 
     class Meta:
         unique_together = ("pinchart", "number")

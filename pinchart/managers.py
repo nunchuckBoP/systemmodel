@@ -1,4 +1,5 @@
 from django.db import models
+import core.utils
 
 class PinchartManager(models.Manager):
     pass
@@ -10,39 +11,7 @@ class BitDescriptionManager(models.Manager):
     pass
 
 class SequenceManager(models.Manager):
-    
-    def copy(self, new_name="None"):
-        """
-         copies entire sequence to another 
-        """
-
-        # if there was no new name supplied,
-        # just call it with the original name
-        # and copy.
-        if new_name is None:
-            new_name = self.name + " COPY"
-
-        # create the new sequence()
-        new_sequence = self.create(name=new_name)
-        new_sequence.save()
-
-        # get the steps
-        steps = self.steps.all().order_by('number')
-
-        # copy all of the steps
-        for i in steps:
-
-            # make a copy of the existing step
-            new_step = i
-
-            # change the sequence that the step is 
-            # attached to, to the squence being copied
-            new_step.sequence = new_sequence
-
-            # save the new step in the new seqence
-            new_step.save()
-
-        return new_sequence
+    pass
 
 class StepManager(models.Manager):
 
