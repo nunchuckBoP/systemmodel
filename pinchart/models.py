@@ -6,7 +6,6 @@ import numpy
 import core.utils
 
 # Create your models here.
-
 class Pinchart(models.Model):
     objects = managers.PinchartManager()
     customer = models.IntegerField(default=0)
@@ -118,6 +117,9 @@ class Step(models.Model):
     number = models.IntegerField()
     description = models.CharField(max_length=82)
 
+    def __str__(self):
+        return self.description
+
     class Meta:
         unique_together = ("sequence", "number")
 
@@ -149,8 +151,11 @@ class StepData(models.Model):
 
     @property
     def value(self):
+
         # gets the type of the value
         _type = self.word.type
+
+        print("_type = %s" % _type)
 
         # selects which value to return based
         # on the type
@@ -185,6 +190,9 @@ class StepData(models.Model):
         _a = _a.replace(':sequence_number:', str(self.sequence.number))
         _a = _a.replace(':step:', str(self.step.number))
         return _a
+
+    def __str__(self):
+        self.value_bool
 
     class Meta:
         unique_together = ("step", "word")

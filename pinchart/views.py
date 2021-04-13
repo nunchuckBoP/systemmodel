@@ -16,6 +16,17 @@ class PinchartDeleteView(DeleteView):
     model = models.Pinchart
     success_url = reverse_lazy('pinchart-list')
 
+class WordListView(ListView):
+    model = models.Word
+
+class WordUpdateView(UpdateView):
+    model = models.Word
+    success_url = reverse_lazy('word-list')
+
+class WordDeleteView(DeleteView):
+    model = models.Word
+    success_url = reverse_lazy('word-list')
+
 class SequenceListView(ListView):
     models = models.Sequence
 
