@@ -1,0 +1,40 @@
+{% extends 'pinchart/base.html' %}
+{% block headline %}Pincharts{% endblock headline %}
+{% block content %}
+	<p class='hidden-print'><a href="/mcs/card/add/?next={{ request.path }}">new pinchart</a></p>
+	{% if not object_list %}
+		<p><i>no pincharts yet.</i></p>
+	{% else %}
+		<table class="table table-striped">
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Controller IP Address</th>
+				<th>Slot</th>
+				<th>Length</th>
+				<th>Sequence</th>
+				<th>Config</th>
+				<th>Actions</th>
+			</tr>
+
+			{% for i in object_list %}
+				<tr>
+					<td>{{ i.name }}</td>
+					<td>{{ i.description }}</td>
+					<td>{{ i.controller_ipaddress }}</td>
+					<td>{{ i.controller_slot }}</td>
+					<td>{{ i.array_length }}</td>
+					<td>
+						<a href="{% url 'pinchart-update' pk=i.pk %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View</a>
+					</td>
+					<td>
+						<a href="{% url 'pinchart-update' pk=i.pk %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View</a>
+					</td>
+					<td>
+						<a href="{% url 'pinchart-update' pk=i.pk %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">Edit</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+{% endblock %}

@@ -11,6 +11,13 @@ class PinchartListView(ListView):
 class PinchartUpdateView(UpdateView):
     model = models.Pinchart
     success_url = reverse_lazy('pinchart-list')
+    fields = [
+        'name',
+        'description',
+        'controller_ipaddress',
+        'controller_slot',
+        'array_length',
+    ]
 
 class PinchartDeleteView(DeleteView):
     model = models.Pinchart

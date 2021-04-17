@@ -1,0 +1,38 @@
+{% extends 'pinchart/base.html' %}
+{% block headline %}Pincharts{% endblock headline %}
+{% block content %}
+	<p class='hidden-print'><a href="#">new pinchart</a></p>
+	{% if not object_list %}
+		<p><i>no words yet.</i></p>
+	{% else %}
+		<table class="table table-striped">
+			<tr>
+                <th>Pinchart</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Address Template</th>
+                <th>Descriptions</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for i in object_list %}
+                <tr>
+                    <td>{{ i.pinchart.name }}</td>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.type }}</td>
+                    <td>{{ i.address_template }}</td>
+                    {% if i.type == "32-BIT" or i.type == "16-BIT" %}
+                        <td>
+                            <a href="#" class="btn btn-primary btn-sm" role="button" aria-pressed="False">Bits</a>
+                        </td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                    <td>
+						<a href="#" class="btn btn-primary btn-sm" role="button" aria-pressed="False">Edit</a>
+					</td>
+                </tr>
+            {% endfor %}
+		</table>
+	{% endif %}
+{% endblock %}

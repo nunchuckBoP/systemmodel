@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
+from pinchart import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('pinchart/', include('pinchart.urls')),
+    path('index/', views.PinchartListView.as_view(), name='pinchart-list'),
+    path('update/<pk>/', views.PinchartUpdateView.as_view(), name='pinchart-update'),
+    path('word/index/', views.WordListView.as_view(), name='word-list'),
+    
 ]
