@@ -1,13 +1,19 @@
 {% extends 'pinchart/base.html' %}
 {% block headline %}Pinchart Data Words{% endblock headline %}
 {% block content %}
-	<p class='hidden-print'><a href="#">New Data Word</a></p>
+    <table class="table table-striped">
+        <tr>
+            <th><h3>Pinchart</h3></th>
+            <td><h3>{{ pinchart.name }}</h3></td>
+        </tr>
+    </table>
+	<p class='hidden-print'><a href="#">New Word</a></p>
 	{% if not object_list %}
 		<p><i>no words yet.</i></p>
 	{% else %}
+        
 		<table class="table table-striped">
 			<tr>
-                <th>Pinchart</th>
                 <th>Name</th>
                 <th>Type</th>
                 <th>Address Template</th>
@@ -17,7 +23,6 @@
 
             {% for i in object_list %}
                 <tr>
-                    <td>{{ i.pinchart.name }}</td>
                     <td>{{ i.name }}</td>
                     <td>{{ i.type }}</td>
                     <td>{{ i.address_template }}</td>

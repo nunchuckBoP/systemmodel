@@ -4,6 +4,7 @@ from pinchart import managers
 from django.db.models.fields import NullBooleanField
 import numpy
 import core.utils
+from pinchart.fields import IntegerRangeField
 
 # Create your models here.
 class Pinchart(models.Model):
@@ -62,7 +63,7 @@ class Word(models.Model):
 class BitDescription(models.Model):
     objects = managers.BitDescriptionManager()
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
-    bit = models.IntegerField(verbose_name="Bit number 0-15, or 0-31")
+    bit = IntegerRangeField(verbose_name="Bit number 0-15, or 0-31", min_value=0, max_value=32)
     device = models.CharField(max_length=24, blank=True, null=True)
     description = models.CharField(max_length=1024)
 
@@ -114,7 +115,7 @@ class Sequence(models.Model):
 class Step(models.Model):
     objects = managers.StepManager()
     sequence = models.ForeignKey(Sequence, on_delete=models.CASCADE)
-    number = models.IntegerField()
+    number = models.PositiveIntegerField()
     description = models.CharField(max_length=82)
 
     def __str__(self):

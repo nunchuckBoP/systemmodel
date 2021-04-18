@@ -20,7 +20,10 @@ from pinchart import views
 
 urlpatterns = [
     path('index/', views.PinchartListView.as_view(), name='pinchart-list'),
+    path('create/', views.PinchartCreateView.as_view(), name='pichart-create'),
     path('update/<pk>/', views.PinchartUpdateView.as_view(), name='pinchart-update'),
     path('word/index/', views.WordListView.as_view(), name='word-list'),
+    path('<pk>/word/index/', views.WordListFilteredView.as_view(), name='word-list-filtered'),
+    path('bitdescriptions/index/', views.BitDescriptionListView.as_view(), name='bitdescriptions-list')
     
 ]
