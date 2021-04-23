@@ -8,7 +8,18 @@ class WordManager(models.Manager):
     pass
 
 class BitDescriptionManager(models.Manager):
-    pass
+
+    def get_next_available_bit(self, word):
+        """
+            Gets the next available bit number for
+            the word
+        """    
+        objects = self.filter(word=word).order_by('-bit')
+
+        if objects is not None:
+            return objects[0].bit + 1
+        else:
+            return 0
 
 class SequenceManager(models.Manager):
     pass

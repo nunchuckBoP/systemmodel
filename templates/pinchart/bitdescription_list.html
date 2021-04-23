@@ -1,7 +1,7 @@
 {% extends 'pinchart/base.html' %}
 {% block headline %}Bit Descriptions{% endblock headline %}
 {% block content %}
-	<p class='hidden-print'><a href="#">New Bit Description</a></p>
+	<p class='hidden-print'><a href="{% url 'bitdescription-create' %}">New Bit Description</a></p>
 	{% if not object_list %}
 		<p><i>No Bit Descriptions Yet.</i></p>
 	{% else %}

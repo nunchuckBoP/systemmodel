@@ -54,6 +54,27 @@ class Word(models.Model):
     type = models.CharField(choices=TYPE_CHOICES, default='DINT', max_length=30)
     address_template = models.CharField(verbose_name="Address Template", max_length=1024)
 
+    @property
+    def bit_full(self):
+        bit_descriptions = BitDescription.objects.filter(word=self)
+        if len(bit_descriptions) >= 32 and self.type == '32-BIT' or \
+            len(bit_descriptions) >= 16 and self.type == '16-BIT':
+            return True
+        else:
+            return False
+            
+    @property
+    def next_bit(self):
+        if self.type == '32-BIT' or self.type == '16-BIT':
+            return BitDescription.objects.get_next_available_bit(self)
+
+    @property
+    def bit_descriptions(self):
+        if self.type == '16-BIT' or self.type == '32-BIT':
+            return BitDescription.objects.filter(word=self)
+        else:
+            return False
+
     def __str__(self):
         return self.name
 
@@ -69,9 +90,10 @@ class BitDescription(models.Model):
 
     def __str__(self):
         if self.device is not None:
-            return str(self.bit) + "[" + str(self.device) + "]" + " " + self.description
+            device_string = self.device
         else:
-            return str(self.bit) + " " + self.description
+            device_string = "None"
+        return "Bit: %s Device: %s Description: %s" % (self.bit, device_string, self.description)
 
     class Meta:
         unique_together = ("word", "bit")

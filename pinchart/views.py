@@ -1,7 +1,7 @@
 from typing import List
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, DeleteView
+from django.views.generic import ListView, UpdateView, DeleteView, RedirectView
 from django.views.generic.edit import CreateView
 import pinchart.models as models
 
@@ -78,6 +78,17 @@ class BitDescriptionListView(ListView):
 
 class BitDescriptionUpdateView(UpdateView):
     model = models.BitDescription
+    fields = [
+        'word',
+        'bit',
+        'device',
+        'description'
+    ]
+
+class BitDescriptionCreateView(CreateView):
+    model = models.BitDescription
+    template_name = 'pinchart/bitdescription_form.html'
+    success_url = reverse_lazy('bitdescriptions-list')
     fields = [
         'word',
         'bit',

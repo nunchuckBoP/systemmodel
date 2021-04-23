@@ -14,9 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, reverse_lazy
 from django.urls.conf import include
 from pinchart import views
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('index/', views.PinchartListView.as_view(), name='pinchart-list'),
@@ -24,6 +25,7 @@ urlpatterns = [
     path('update/<pk>/', views.PinchartUpdateView.as_view(), name='pinchart-update'),
     path('word/index/', views.WordListView.as_view(), name='word-list'),
     path('<pk>/word/index/', views.WordListFilteredView.as_view(), name='word-list-filtered'),
-    path('bitdescriptions/index/', views.BitDescriptionListView.as_view(), name='bitdescriptions-list')
+    path('bitdescriptions/index/', views.BitDescriptionListView.as_view(), name='bitdescriptions-list'),
+    path('bitdescriptions/create/', views.BitDescriptionCreateView.as_view(), name='bitdescription-create'),
     
 ]
