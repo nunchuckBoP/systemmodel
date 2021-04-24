@@ -1,0 +1,15 @@
+{% extends 'pinchart/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ headline }} | {{ block.super }}{% endblock %}
+{% block headline %} {{ headline }}{% endblock headline %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <input type="submit" value="Delete" class="btn btn-danger btn-sm">
+        <a href="{% url 'word-list' pk=object.pinchart.pk %}" class="btn btn-primary btn-sm">Back</a>
+    </form>
+{% endblock %}

@@ -25,10 +25,10 @@
 					<td>{{ i.controller_slot }}</td>
 					<td>{{ i.array_length }}</td>
 					<td>
-						<a href="{% url 'pinchart-update' pk=i.pk %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View</a>
+						<a href="{% url 'pinchart-update' pk=i.pk %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View/Edit</a>
 					</td>
 					<td>
-						<a href="{% url 'word-list-filtered' pk=i.pk %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View</a>
+						<a href="{% url 'word-list' pk=i.pk %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View/Edit</a>
 					</td>
 					<td>
 						<a href="{% url 'pinchart-update' pk=i.pk %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">Edit</a>

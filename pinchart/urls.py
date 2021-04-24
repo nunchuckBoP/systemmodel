@@ -23,9 +23,11 @@ urlpatterns = [
     path('index/', views.PinchartListView.as_view(), name='pinchart-list'),
     path('create/', views.PinchartCreateView.as_view(), name='pichart-create'),
     path('update/<pk>/', views.PinchartUpdateView.as_view(), name='pinchart-update'),
-    path('word/index/', views.WordListView.as_view(), name='word-list'),
-    path('<pk>/word/index/', views.WordListFilteredView.as_view(), name='word-list-filtered'),
-    path('bitdescriptions/index/', views.BitDescriptionListView.as_view(), name='bitdescriptions-list'),
-    path('bitdescriptions/create/', views.BitDescriptionCreateView.as_view(), name='bitdescription-create'),
+    path('<pk>/word/index/', views.WordListView.as_view(), name='word-list'),
+    path('<pk>/word/create/', views.WordCreateView.as_view(), name='word-create'),
+    path('word/<pk>/update', views.WordUpdateView.as_view(), name='word-update'),
+    path('word/<pk>/delete', views.WordDeleteView.as_view(), name='word-delete'),
+    path('word/<pk>/bitdescriptions/index/', views.BitDescriptionListView.as_view(), name='bitdescription-list'),
+    path('word/<pk>/bitdescriptions/create/', views.BitDescriptionCreateView.as_view(), name='bitdescription-create'),
     
 ]

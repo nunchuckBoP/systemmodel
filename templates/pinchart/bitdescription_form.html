@@ -2,10 +2,20 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}Edit Bit Description | {{ block.super }}{% endblock %}
-{% block headline %} Edit Bit Description {% endblock headline %}
+{% block title %} {{ headline }} | {{ block.super }}{% endblock %}
+{% block headline %} {{ headline }} {% endblock headline %}
 
 {% block content %}
+    <table class="table table-striped">
+        <tr>
+            <th>Pinchart</th>
+            <td>{{ parent_object.pinchart }}</td>
+        </tr>
+        <tr>
+            <th>Word</th>
+            <td>{{ parent_object }}</td>
+        </tr>
+    </table>
     <form method="post" class="uniForm">
         {% csrf_token %}
         {{ form|crispy }}

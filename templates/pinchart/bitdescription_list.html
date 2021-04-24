@@ -1,12 +1,33 @@
 {% extends 'pinchart/base.html' %}
 {% block headline %}Bit Descriptions{% endblock headline %}
 {% block content %}
-	<p class='hidden-print'><a href="{% url 'bitdescription-create' %}">New Bit Description</a></p>
+	<table class="table table-striped">
+		<tr>
+			<th>Pinchart</th>
+			<td>{{ parent_object.pinchart }}</td>
+		</tr>
+		<tr>
+			<th>Word</th>
+			<td>{{ parent_object }}</td>
+		</tr>
+	</table>
 	{% if not object_list %}
 		<p><i>No Bit Descriptions Yet.</i></p>
 	{% else %}
 		<table class="table table-striped">
-            
+			<tr>
+				<th>Bit<br />Number</th>
+				<th>Device</th>
+				<th>Description</th>
+			</tr>
+            {% for i in object_list %}
+				<tr>
+					<td>{{ i.bit }}</td>
+					<td>{{ i.device }}</td>
+					<td>{{ i.description }}</td>
+				</tr>
+			{% endfor %}
 		</table>
 	{% endif %}
+	<p class='hidden-print'><a href="{% url 'bitdescription-create' pk=parent_object.pk %}">Add</a></p>
 {% endblock %}

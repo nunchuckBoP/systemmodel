@@ -69,6 +69,14 @@ class Word(models.Model):
             return BitDescription.objects.get_next_available_bit(self)
 
     @property
+    def has_children(self):
+        if self.type == '32-BIT' or self.type == '16-BIT' and \
+            len(BitDescription.objects.filter(word=self)) > 0:
+                return True
+        else:
+            return False
+
+    @property
     def bit_descriptions(self):
         if self.type == '16-BIT' or self.type == '32-BIT':
             return BitDescription.objects.filter(word=self)
@@ -177,8 +185,6 @@ class StepData(models.Model):
 
         # gets the type of the value
         _type = self.word.type
-
-        print("_type = %s" % _type)
 
         # selects which value to return based
         # on the type

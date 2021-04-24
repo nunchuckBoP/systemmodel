@@ -1,0 +1,21 @@
+{% extends 'pinchart/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ headline }} | {{ block.super }}{% endblock %}
+{% block headline %} {{ headline }}{% endblock headline %}
+
+{% block content %}
+    <table class='table'>
+        <tr>
+            <th><h3>{{ parent }}</h3></th>
+            <td><h3>{{ parent_object.name }}</h3></td>
+        </tr>
+    </table>
+    <form method="post" class="uniForm">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{% url 'word-list' pk=parent_object.pk %}" class="btn btn-primary">Back</a>
+    </form>
+{% endblock %}
