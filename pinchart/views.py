@@ -75,6 +75,7 @@ class WordCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(WordCreateView, self).get_context_data(**kwargs)
+        context['form'] = self.form_class(initial={'pinchart':self.get_parent_object().pk})
         context['headline'] = "Create Pinchart Data Word"
         context['parent'] = 'Pinchart'
         context['parent_object'] = self.get_parent_object()
@@ -122,15 +123,22 @@ class BitDescriptionListView(ListView):
         context['parent_object'] = self.get_parent()
         return context
         
-
 class BitDescriptionUpdateView(UpdateView):
     model = models.BitDescription
-    fields = [
-        'word',
-        'bit',
-        'device',
-        'description'
-    ]
+    template_name = "pinchart/bitdescription_form.html"
+    sucess_url = "bitdescription-list"
+    form_class = forms.BitDescriptionForm
+
+    def get_success_url(self):
+        object = get_object_or_404(models.BitDescription, pk=self.kwargs.get('pk'))
+        return reverse_lazy(self.success_url, kwargs={'pk':object.word.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super(BitDescriptionUpdateView, self).get_context_data(**kwargs)
+        context['headline'] = 'Edit Pinchart Bit Description for Word'
+        context['parent'] = 'Word'
+        context['parent_object'] = context['object'].word
+        return context
 
 class BitDescriptionCreateView(CreateView):
     model = models.BitDescription
@@ -148,6 +156,7 @@ class BitDescriptionCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form'] = self.form_class(initial={'word':self.get_parent_object().pk})
         context['headline'] = "Create Bit Description for Word"
         context['parent'] = 'Word'
         context['parent_object'] = self.get_parent_object()
