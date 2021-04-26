@@ -5,7 +5,7 @@
     <table class="table table-striped">
         <tr>
             <th><h3>Pinchart</h3></th>
-            <td><h3>{{ pinchart.name }}</h3></td>
+            <td><h3>{{ parent_object.name }}</h3></td>
         </tr>
     </table>
 	{% if not object_list %}
@@ -41,5 +41,6 @@
             {% endfor %}
 		</table>
 	{% endif %}
-    <a href="{% url 'word-create' pk=parent_object.pk %}">Add Word</a>
+	<a class='btn btn-success' href="{% url 'word-create' pk=parent_object.pk %}">Add Word</a>
+	<a class='btn btn-primary' href="{% url 'pinchart-list' %}">Back</a></p>
 {% endblock %}

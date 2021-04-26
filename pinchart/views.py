@@ -52,7 +52,7 @@ class WordListView(ListView):
         return parent_pinchart
 
     def get_queryset(self):
-        return models.Word.objects.filter(pinchart=self.get_parent())
+        return models.Word.objects.filter(pinchart=self.get_parent()).order_by('group')
 
     def get_context_data(self, **kwargs):
         context = super(WordListView, self).get_context_data(**kwargs)
@@ -66,16 +66,21 @@ class WordCreateView(CreateView):
     template_name = 'pinchart/word_form.html'
 
     def get_success_url(self):
-        return reverse_lazy(self.success_url, kwargs={'pk':self.get_parent_object().pk})
+       return reverse_lazy(self.success_url, kwargs={'pk':self.get_parent_object().pk})
 
     def get_parent_object(self):
         parent_pk = self.kwargs.get('pk')
         parent = get_object_or_404(models.Pinchart, pk=parent_pk)
         return parent
 
+    def get_initial(self):
+        initial = super(WordCreateView, self).get_initial()
+        parent = self.get_parent_object()
+        initial.update({'pinchart':parent})
+        return initial
+
     def get_context_data(self, **kwargs):
         context = super(WordCreateView, self).get_context_data(**kwargs)
-        context['form'] = self.form_class(initial={'pinchart':self.get_parent_object().pk})
         context['headline'] = "Create Pinchart Data Word"
         context['parent'] = 'Pinchart'
         context['parent_object'] = self.get_parent_object()
@@ -154,9 +159,14 @@ class BitDescriptionCreateView(CreateView):
         parent = get_object_or_404(models.Word, pk=parent_pk)
         return parent
 
+    def get_initial(self):
+        initial = super(BitDescriptionCreateView, self).get_initial()
+        parent = self.get_parent_object()
+        initial.update({'word':parent})
+        return initial
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class(initial={'word':self.get_parent_object().pk})
         context['headline'] = "Create Bit Description for Word"
         context['parent'] = 'Word'
         context['parent_object'] = self.get_parent_object()

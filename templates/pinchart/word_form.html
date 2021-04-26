@@ -12,6 +12,41 @@
             <td><h3>{{ parent_object.name }}</h3></td>
         </tr>
     </table>
+    <table class='table'>
+        <tr>
+            <th>Field</th>
+            <th>Information</th>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>
+                Name of the data word (can be anything, but suggested that it is the same in the controller i.e. Cond1)
+            </td>
+        <tr>
+            <td>Group:</td>
+            <td>
+                Group of word for ordering (i.e. 'COND' will group the condition words together)
+            </td>
+        </tr>
+        <tr>
+            <td>Type:</td>
+            <td>
+                Data type of word, 32-BIT and 16-BIT are for bit level items within DINT and INT words. STEP-DESCIPTION 
+                is where the text typed into the step descriptions goes. This way the user only has to type it in one time. 
+                Otherwise types are native.
+            </td>
+        </tr>
+        <tr>
+            <td>Address Template:</td>
+            <td>
+                Template address how it exists in controller. Variables can exist for this:<br />
+                :step: = Step number that is in the sequence<br />
+                :seq: = Pinchart Sequence Number<br />
+                Examples of address template: Controller1.Sequence[:seq:].Cond1[:step:], Controller1.Cond1[:seq:].Step[:step:]<br />
+                Bits will be taken care of by adding the '.bitnumber' to the end of the address.
+            </td>
+        </tr>
+    </table>
     <form method="post" class="uniForm">
         {% csrf_token %}
         {{ form|crispy }}

@@ -21,7 +21,7 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('index/', views.PinchartListView.as_view(), name='pinchart-list'),
-    path('create/', views.PinchartCreateView.as_view(), name='pichart-create'),
+    path('create/', views.PinchartCreateView.as_view(), name='pinchart-create'),
     path('update/<pk>/', views.PinchartUpdateView.as_view(), name='pinchart-update'),
     path('<pk>/word/index/', views.WordListView.as_view(), name='word-list'),
     path('<pk>/word/create/', views.WordCreateView.as_view(), name='word-create'),

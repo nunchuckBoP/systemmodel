@@ -1,7 +1,6 @@
 {% extends 'pinchart/base.html' %}
 {% block headline %}Pincharts{% endblock headline %}
 {% block content %}
-	<p class='hidden-print'><a href="/mcs/card/add/?next={{ request.path }}">new pinchart</a></p>
 	{% if not object_list %}
 		<p><i>no pincharts yet.</i></p>
 	{% else %}
@@ -37,4 +36,5 @@
 			{% endfor %}
 		</table>
 	{% endif %}
+	<p class='hidden-print'><a href="{% url 'pinchart-create' %}">new pinchart</a></p>
 {% endblock %}

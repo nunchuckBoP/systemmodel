@@ -35,7 +35,7 @@ class Pinchart(models.Model):
         n.save()
 
     class Meta:
-        unique_together = ("customer", "name")
+        unique_together = ("customer", "controller_ipaddress")
 
 class Word(models.Model):
     TYPE_CHOICES = [
@@ -50,6 +50,7 @@ class Word(models.Model):
     ]
     objects = managers.WordManager()
     pinchart = models.ForeignKey(Pinchart, on_delete=models.CASCADE)
+    group = models.CharField(max_length=82, blank=True, null=True)
     name = models.CharField(max_length=82) # word or variable name
     type = models.CharField(choices=TYPE_CHOICES, default='DINT', max_length=30)
     address_template = models.CharField(verbose_name="Address Template", max_length=1024)

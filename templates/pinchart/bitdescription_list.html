@@ -29,5 +29,6 @@
 			{% endfor %}
 		</table>
 	{% endif %}
-	<p class='hidden-print'><a href="{% url 'bitdescription-create' pk=parent_object.pk %}">Add</a></p>
+	<a class='btn btn-success' href="{% url 'bitdescription-create' pk=parent_object.pk %}">Add Bit Description</a>
+	<a class='btn btn-primary' href="{% url 'word-list' pk=parent_object.pinchart.pk %}">Back</a></p>
 {% endblock %}

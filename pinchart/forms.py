@@ -1,5 +1,6 @@
 from django import forms
 import pinchart.models as models
+from django.forms import ValidationError
 
 class WordForm(forms.ModelForm):
     """
@@ -9,7 +10,7 @@ class WordForm(forms.ModelForm):
     """
     class Meta:
         model = models.Word
-        fields = ['pinchart', 'name', 'type', 'address_template']
+        fields = ['pinchart', 'name', 'group', 'type', 'address_template']
         widgets = {
             'pinchart':forms.HiddenInput(),
         }

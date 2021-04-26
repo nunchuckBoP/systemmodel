@@ -20,5 +20,6 @@
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-success">Save</button>
+        <a href="{% url 'bitdescription-list' pk=parent_object.pk %}" class="btn btn-primary">Back</a>
     </form>
 {% endblock %}
