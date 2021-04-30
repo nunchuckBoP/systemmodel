@@ -164,6 +164,38 @@ class StepData(models.Model):
     value_real = models.DecimalField(default=0.0, blank=True, null=True, decimal_places=3, max_digits=10)
     value_string = models.CharField(default=None, blank=True, null=True, max_length=1024)
     value_int = models.IntegerField(default=0, null=True, blank=True)
+    value_b0 = models.BooleanField(default=0, null=True, blank=True)
+    value_b1 = models.BooleanField(default=0, null=True, blank=True)
+    value_b2 = models.BooleanField(default=0, null=True, blank=True)
+    value_b3 = models.BooleanField(default=0, null=True, blank=True)
+    value_b4 = models.BooleanField(default=0, null=True, blank=True)
+    value_b5 = models.BooleanField(default=0, null=True, blank=True)
+    value_b6 = models.BooleanField(default=0, null=True, blank=True)
+    value_b7 = models.BooleanField(default=0, null=True, blank=True)
+    value_b8 = models.BooleanField(default=0, null=True, blank=True)
+    value_b9 = models.BooleanField(default=0, null=True, blank=True)
+    value_b10 = models.BooleanField(default=0, null=True, blank=True)
+    value_b11 = models.BooleanField(default=0, null=True, blank=True)
+    value_b12 = models.BooleanField(default=0, null=True, blank=True)
+    value_b13 = models.BooleanField(default=0, null=True, blank=True)
+    value_b14 = models.BooleanField(default=0, null=True, blank=True)
+    value_b15 = models.BooleanField(default=0, null=True, blank=True)
+    value_b16 = models.BooleanField(default=0, null=True, blank=True)
+    value_b17 = models.BooleanField(default=0, null=True, blank=True)
+    value_b18 = models.BooleanField(default=0, null=True, blank=True)
+    value_b19 = models.BooleanField(default=0, null=True, blank=True)
+    value_b20 = models.BooleanField(default=0, null=True, blank=True)
+    value_b21 = models.BooleanField(default=0, null=True, blank=True)
+    value_b22 = models.BooleanField(default=0, null=True, blank=True)
+    value_b23 = models.BooleanField(default=0, null=True, blank=True)
+    value_b24 = models.BooleanField(default=0, null=True, blank=True)
+    value_b25 = models.BooleanField(default=0, null=True, blank=True)
+    value_b26 = models.BooleanField(default=0, null=True, blank=True)
+    value_b27 = models.BooleanField(default=0, null=True, blank=True)
+    value_b28 = models.BooleanField(default=0, null=True, blank=True)
+    value_b29 = models.BooleanField(default=0, null=True, blank=True)
+    value_b30 = models.BooleanField(default=0, null=True, blank=True)
+    value_b31 = models.BooleanField(default=0, null=True, blank=True)
 
     def set_value(self, value):
         
@@ -191,9 +223,49 @@ class StepData(models.Model):
         # on the type
         if _type == 'BOOL':
             return self.value_bool
-        elif _type == '32-BIT' or _type == 'DINT':
-            return numpy.int32(self.value_dint)
-        elif _type == '16-BIT' or _type == 'INT':
+        if _type == 'DINT':
+            return self.value_dint
+        elif _type == '32-BIT':
+            # puts the individual bits in a list of booleans
+            bin_list = [
+                self.value_b31, self.value_b30, self.value_b29, self.value_b28,
+                self.value_b27, self.value_b26, self.value_b25, self.value_b24,
+                self.value_b23, self.value_b22, self.value_b21, self.value_b20,
+                self.value_b19, self.value_b18, self.value_b17, self.value_b16,
+                self.value_b15, self.value_b14, self.value_b13, self.value_b12,
+                self.value_b11, self.value_b10, self.value_b9,  self.value_b8,
+                self.value_b7,  self.value_b6,  self.value_b5,  self.value_b4,
+                self.value_b3,  self.value_b2,  self.value_b1,  self.value_b0
+            ]
+
+            # converts the list of booleans to ones and zeros
+            bin_ints = [int(i) for i in bin_list]
+
+            # takes the bits and coverts them to a value
+            res = 0
+            for ele in bin_ints:
+                res = (res << 1) | ele
+            return numpy.int32(res)
+
+        elif _type == '16-BIT':            
+            # puts the individual bits in a list of booleans
+            bin_list = [
+                self.value_b15, self.value_b14, self.value_b13, self.value_b12,
+                self.value_b11, self.value_b10, self.value_b9,  self.value_b8,
+                self.value_b7,  self.value_b6,  self.value_b5,  self.value_b4,
+                self.value_b3,  self.value_b2,  self.value_b1,  self.value_b0
+            ]
+
+            # converts the list of booleans to ones and zeros
+            bin_ints = [int(i) for i in bin_list]
+
+            # takes the bits and coverts them to a value
+            res = 0
+            for ele in bin_ints:
+                res = (res << 1) | ele
+            return numpy.int16(res)
+
+        elif _type == 'INT':
             return numpy.int16(self.value_int)
         elif _type == 'REAL':
             return self.value_real
@@ -203,16 +275,6 @@ class StepData(models.Model):
             return self.description
         else:
             raise ValueError()       
-
-    @property
-    def bin_value(self):
-        # gets the type of the word
-        _type = self.word.type
-
-        if _type == '32-BIT':
-            return numpy.binary_repr(self.value, width=32)
-        elif _type == '16-BIT':
-            return numpy.binary_repr(self.value, width=16)
 
     @property
     def full_address(self):
