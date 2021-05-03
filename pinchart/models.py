@@ -204,12 +204,18 @@ class StepData(models.Model):
 
         if _type == 'BOOL':
             self.value_bool = value
-        elif _type == '32-BIT' or _type == 'DINT':
+        elif _type == 'DINT':
             self.value_dint = numpy.int32(value)
-        elif _type == '16-BIT' or _type == 'INT':
+        elif _type == 'INT':
             self.value_int = numpy.int16(value)
         elif _type == 'REAL':
             self.value_real = float(value)
+        elif _type == '32-BIT':
+            # set the individual booleans
+            pass
+        elif _type == '16-BIT':
+            # set the individual booleans
+            pass
         else:
             raise ValueError()
 
