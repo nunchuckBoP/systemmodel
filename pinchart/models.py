@@ -15,19 +15,9 @@ class Pinchart(models.Model):
     controller_ipaddress = models.GenericIPAddressField(verbose_name="Controller IP Address",
                                                         protocol='IPv4')
     controller_slot = models.IntegerField(verbose_name="Controller Slot #")
-    locked = models.BooleanField(verbose_name="Locked for Editing", default=False)
-    array_length = models.IntegerField(verbose_name="PLC Array Length")
 
     def __str__(self):
         return self.name
-
-    def lock(self):
-        self.locked = True
-        self.save()
-    
-    def unlock(self):
-        self.locked = False
-        self.save()
 
     def __deep_copy__(self, new_name):
         n = core.utils.derive(self)
@@ -115,14 +105,22 @@ class Sequence(models.Model):
     address_template = models.CharField(max_length=1024, null=True, blank=True)
     name_address_template = models.CharField(max_length=1024, null=True, blank=True)
     locked = models.BooleanField(verbose_name="Locked for Editing", default=False)
-    array_length = models.IntegerField(verbose_name="PLC Array Length")
+    array_length = models.IntegerField(verbose_name="Step Count")
 
     @property
     def is_locked(self):
-        if self.locked or self.pinchart.locked:
+        if self.locked:
             return True
         else:
             return False
+
+    @property
+    def address(self):
+        return self.address_template.replace(":sequence:", str(self.number))
+
+    @property
+    def name_address(self):
+        return self.name_address_template.replace(":sequence:", str(self.number))
 
     def lock(self):
         self.locked = True

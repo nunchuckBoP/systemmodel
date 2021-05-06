@@ -15,6 +15,21 @@ class WordForm(forms.ModelForm):
             'pinchart':forms.HiddenInput(),
         }
 
+class SequenceForm(forms.ModelForm):
+    """
+        SequenceForm - the pinchart data should
+        always be known
+    """
+    class Meta:
+        model = models.Sequence
+        fields = [
+            'pinchart', 'name', 'number', 'address_template',
+            'name_address_template', 'array_length'
+        ]
+        widgets = {
+            'pinchart':forms.HiddenInput(),
+        }
+
 class BitDescriptionForm(forms.ModelForm):
     """
         BitDescriptionForm - model form when the word

@@ -20,7 +20,6 @@ class PinchartCreateView(CreateView):
         'description',
         'controller_ipaddress',
         'controller_slot',
-        'array_length',
     ]
     banner_text = "Create Pinchart"
 
@@ -32,7 +31,6 @@ class PinchartUpdateView(UpdateView):
         'description',
         'controller_ipaddress',
         'controller_slot',
-        'array_length',
     ]
     banner_text = "Edit Pinchart"
 
@@ -173,14 +171,37 @@ class BitDescriptionCreateView(CreateView):
         return context
 
 class SequenceListView(ListView):
-    models = models.Sequence
+    model = models.Sequence
+
+    def get_context_data(self, **kwargs):
+        context = super(SequenceListView, self).get_context_data(**kwargs)
+        pinchart = get_object_or_404(models.Pinchart, pk=self.kwargs.get('pk'))
+        context['parent_object'] = pinchart
+        return context
+
+    def get_queryset(self):
+        pinchart_pk = self.kwargs.get('pk')
+        pinchart = get_object_or_404(models.Pinchart, pk=pinchart_pk)
+        return models.Sequence.objects.filter(pinchart=pinchart).order_by('name')
 
 class SequenceUpdateView(UpdateView):
-    models = models.Sequence
+    model = models.Sequence
     success_url = reverse_lazy('sequence-list')
+    form_class = forms.SequenceForm
+    
+    def get_context_data(self, **kwargs):
+        context = super(SequenceUpdateView, self).get_context_data(**kwargs)
+        context['parent'] = 'Pinchart'
+        context['parent_object'] = context['object'].pinchart
+        return context
+
+    def get_success_url(self):
+        _pk = self.kwargs.get('pk')
+        object = get_object_or_404(models.Sequence, pk=_pk)
+        return reverse_lazy('sequence-list', kwargs={'pk':object.pinchart.pk})
 
 class SequenceDeleteView(DeleteView):
-    models = models.Sequence
+    model = models.Sequence
     success_url = reverse_lazy('sequence-list')
 
 class StepListView(ListView):

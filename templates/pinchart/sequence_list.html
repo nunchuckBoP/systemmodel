@@ -1,0 +1,46 @@
+{% extends 'pinchart/base.html' %}
+{% block headline %}Pinchart Sequences{% endblock headline %}
+{% block content %}
+	<table class="table table-striped">
+		<tr>
+			<th><h3>Pinchart</h3></th>
+			<td><h3>{{ parent_object.name }}</h3></td>
+		</tr>
+	</table>
+	{% if not object_list %}
+		<p><i>no sequences yet.</i></p>
+	{% else %}
+		<table class="table table-striped">
+			<tr>
+				<th>Name</th>
+				<th>Number</th>
+				<th>Steps</th>
+				<th>Address<br />Preview</th>
+				<th>Name Address<br />Preview</th>
+				<th>Locked</th>
+				<th>Edit<br />Steps</th>
+				<th>Actions</th>
+			</tr>
+
+			{% for i in object_list %}
+				<tr>
+					<td>{{ i.name }}</td>
+					<td>{{ i.number }}</td>
+					<td>{{ i.array_length }}</td>
+					<td>{{ i.address }}</td>
+					<td>{{ i.name_address }}</td>
+					<td>{{ i.is_locked }}</td>
+					<td>
+						<a href="#" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View/Edit</a>
+					</td>
+					<td>
+						<a href="{% url 'sequence-update' pk=i.id %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">Edit</a>
+						<a href="#" class="btn btn-danger btn-sm" role="button" aria-pressed="False">Delete</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+	<a class='btn btn-success' href="#">Add Sequence</a>
+	<a class='btn btn-primary' href="{% url 'pinchart-list' %}">Back</a></p>
+{% endblock %}

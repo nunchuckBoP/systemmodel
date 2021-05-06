@@ -1,0 +1,59 @@
+{% extends 'pinchart/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Edit Sequence | {{ block.super }}{% endblock %}
+{% block headline %} Edit Sequence{% endblock headline %}
+
+{% block content %}
+    <table class='table'>
+        <tr>
+            <th>Field</th>
+            <th>Information</th>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td>
+                Name of the sequence. This will get uploaded and downloaded from the controller.
+            </td>
+        <tr>
+            <td>Number:</td>
+            <td>
+                If the sequence is within an array, this is the index number of that array. This is used in the address templates.
+            </td>
+        </tr>
+        <tr>
+            <td>Address Template:</td>
+            <td>
+                The address in the controller that the sequence exists.<br />
+                :sequence: or :seq: will swap out the sequence number for the address.
+                For example CIP1.Sequence[:sequence:] will yeild CIP1.Sequence[1] or equivelant based
+                on the sequence number.<br />
+                The user can also specify the specific address of the sequence. This is a little more
+                straight forward. For example, CIP1.Sequence[1].
+            </td>
+        </tr>
+        <tr>
+            <td>Name Address Template:</td>
+            <td>
+                Same information about the address as above, but this address is to point the system to
+                where the STRING of the sequence name should be stored. If the system does not stored
+                the string name of the sequence, leave it blank. The name of the sequence will be 
+                downloaded to this address.
+            </td>
+        </tr>
+        <tr>
+            <td>Step Count:</td>
+            <td>
+                The number of steps in the sequence. This should not be larger than what is in the
+                controller. It can be smaller, but it may leave abandoned sequence data.
+            </td>
+        </tr>
+    </table>
+    <form method="post" class="uniForm">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{% url 'sequence-list' pk=parent_object.pk %}" class="btn btn-primary">Back</a>
+    </form>
+{% endblock %}
