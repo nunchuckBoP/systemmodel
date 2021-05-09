@@ -27,6 +27,7 @@ urlpatterns = [
     path('<pk>/word/create/', views.WordCreateView.as_view(), name='word-create'),
     path('<pk>/sequence/index/', views.SequenceListView.as_view(), name='sequence-list'),
     path('sequence/<pk>/update/', views.SequenceUpdateView.as_view(), name='sequence-update'),
+    path('<pk>/steps/index/', views.StepListView.as_view(), name='step-list'),
     path('word/<pk>/update', views.WordUpdateView.as_view(), name='word-update'),
     path('word/<pk>/delete', views.WordDeleteView.as_view(), name='word-delete'),
     path('word/<pk>/bitdescriptions/index/', views.BitDescriptionListView.as_view(), name='bitdescription-list'),

@@ -31,7 +31,7 @@
 					<td>{{ i.name_address }}</td>
 					<td>{{ i.is_locked }}</td>
 					<td>
-						<a href="#" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View/Edit</a>
+						<a href="{% url 'step-list' pk=i.id %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View/Edit</a>
 					</td>
 					<td>
 						<a href="{% url 'sequence-update' pk=i.id %}" class="btn btn-primary btn-sm" role="button" aria-pressed="False">Edit</a>

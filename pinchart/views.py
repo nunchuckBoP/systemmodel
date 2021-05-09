@@ -1,4 +1,4 @@
-from typing import List
+from typing import ContextManager, List, Sequence
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.urls.base import reverse
@@ -206,7 +206,22 @@ class SequenceDeleteView(DeleteView):
 
 class StepListView(ListView):
     model = models.Step
+    
+    def get_context_data(self, **kwargs):
+        
+        # gets the sequence from the primary key
+        sequence = get_object_or_404(models.Sequence, pk=self.kwargs.get('pk'))
 
+        # gets the steps for the sequence
+        steps = models.Step.objects.filter(sequence=sequence).order_by('number')
+
+        context = {
+            'object_list':steps,
+            'parent_object':sequence,
+        }
+
+        return context
+        
 class StepUpdateView(UpdateView):
     model = models.Step
     success_url = reverse_lazy('step-list')

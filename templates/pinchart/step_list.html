@@ -1,0 +1,41 @@
+{% extends 'pinchart/base.html' %}
+{% block headline %}Pinchart Sequences{% endblock headline %}
+{% block content %}
+	<table class="table table-striped">
+		<tr>
+			<th><h3>Pinchart</h3></th>
+			<td><h3>{{ parent_object.pinchart.name }}</h3></td>
+		</tr>
+		<tr>
+			<th><h3>Sequence</h3></th>
+			<td><h3>{{ parent_object.name }}</h3></td>
+		</tr>
+	</table>
+	{% if not object_list %}
+		<p><i>no steps yet.</i></p>
+	{% else %}
+		<table class="table table-striped">
+			<tr>
+				<th>Number</th>
+				<th>Description</th>
+				<th>Data</th>
+			</tr>
+
+			{% for i in object_list %}
+				<tr>
+					<td>
+						{{ i.number }}
+					</td>
+					<td>
+						{{ i.description }}
+					</td>
+					<td>
+						<a href="#" class="btn btn-primary btn-sm" role="button" aria-pressed="False">View/Edit</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+	<a class='btn btn-success' href="#">Add Sequence</a>
+	<a class='btn btn-primary' href="{% url 'pinchart-list' %}">Back</a></p>
+{% endblock %}
